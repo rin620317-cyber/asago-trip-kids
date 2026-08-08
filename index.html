@@ -609,39 +609,80 @@
 </div>
 
 <script>
-/* ASAGO_HIDE_PACKING — 持ち物リストは長男のページの担当なので、このページからは出さない。
-   娘さんのHTMLは書き換えず、読み込み時にカードごと取り除いている。
-   ★必ずシムより先に置くこと。あとに置くと、下の署名が「取り除く前の項目数」で計算され、
+/* ASAGO_PLAN_PATCH — 旅程表ページの調整。娘さんのHTMLは書き換えず、読み込み時に整えている。
+   ★必ずシムより先に置くこと。あとに置くと署名が「調整前の項目数」で計算され、
      古い世代のチェックが残った項目に付いてしまう。
-   元に戻したいときは update.ps1 のこのブロックを消すだけ。
-   カードの見出し名が変わると一致しなくなり、その時は「隠れず表示される」側に倒れる。 */
+   元に戻したいときは update.ps1 のこのブロックを消すだけ。 */
 (function(){
+  /* (1) 持ち物カードを外す（長男のページの担当なので重複させない）。
+         見出し名が変わると一致しなくなり、その時は「隠れず表示される」側に倒れる。 */
   try {
     var HIDE = ['買い出し', 'あそび道具', '身のまわり'];
+    var removed = 0;
     var cards = document.querySelectorAll('.board .card');
     for (var i = 0; i < cards.length; i++) {
       var h = cards[i].querySelector('h2');
       if (!h) continue;
       var t = (h.textContent || '').replace(/\s+/g, '');
       for (var j = 0; j < HIDE.length; j++) {
-        if (t.indexOf(HIDE[j]) === 0) { cards[i].remove(); break; }
+        if (t.indexOf(HIDE[j]) === 0) { cards[i].remove(); removed++; break; }
+      }
+    }
+    /* 外したぶん、持ち物リストへの行き先を置いておく */
+    var board = document.querySelector('.board');
+    if (removed > 0 && board && !document.getElementById('asago-list-link')) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.id = 'asago-list-link';
+      card.innerHTML = '<h2>🎒 もちもの</h2>'
+        + '<p style="margin:0;line-height:1.8">もちものリストは <a href="checklist.html" '
+        + 'style="font-weight:700;text-decoration:underline">こっちのページ</a> にあるよ。<br>'
+        + '<span style="opacity:.7;font-size:.86em">おにいちゃんが作りました</span></p>';
+      board.insertBefore(card, board.firstChild);
+    }
+  } catch (e) {}
+
+  /* (2) 2日目：チェックアウトを美術館より前に出す。
+         先に精算まで済ませておけば、美術館で時間を気にしなくてよくなるため。
+         すでにチェックアウトが先ならなにもしない（娘さんが直したら自動で無効になる）。 */
+  try {
+    var lis = document.querySelectorAll('.d2 ol.timeline li');
+    var co = null, mu = null, coI = -1, muI = -1;
+    for (var k = 0; k < lis.length; k++) {
+      var w = lis[k].querySelector('.what');
+      if (!w) continue;
+      var wt = (w.textContent || '').replace(/\s+/g, '');
+      if (co === null && wt.indexOf('チェックアウト') === 0) { co = lis[k]; coI = k; }
+      if (mu === null && wt.indexOf('あさご芸術の森美術館') === 0) { mu = lis[k]; muI = k; }
+    }
+    if (co && mu && coI > muI) {
+      mu.parentNode.insertBefore(co, mu);
+      var ct = co.querySelector('.t'); if (ct) ct.textContent = '9:45';
+      var mt = mu.querySelector('.t'); if (mt) mt.textContent = '10:00';
+      var cw = co.querySelector('.why');
+      if (cw) cw.textContent = '先に精算まで済ませる。忘れ物チェック、クーラーボックスの中も。あとは時間を気にせず美術館へ';
+      var mw = mu.querySelector('.why');
+      if (mw && mw.textContent.indexOf('チェックアウト後') < 0) {
+        mw.textContent = mw.textContent + '。チェックアウト後なのでゆっくり見られる';
       }
     }
   } catch (e) {}
 })();
-
 /* ASAGO_STORAGE_SHIM — GitHub Pages には window.storage が無いので localStorage で代替する。
    あわせて「リストの中身が変わったら古いチェックを捨てる」処理を入れている。
-   このページはチェック状態を並び順（i0, i1, …）で覚えるため、項目を1つ足しただけで
+   どちらのページもチェック状態を並び順で覚えるため、項目を1つ足しただけで
    以前のチェックが別の行に付いてしまう。項目の中身から署名を作り、変わったら世代を分ける。 */
 if (!window.storage) {
   var __ASAGO_NS = 'asagoshim:';
   var __ASAGO_SIG = (function(){
     try {
-      var els = document.querySelectorAll('ul.check li, ol.timeline li');
+      var els = document.querySelectorAll('input[type=checkbox], ul.check li, ol.timeline li');
       var s = els.length + ':';
       for (var i = 0; i < els.length; i++) {
-        s += (els[i].textContent || '').replace(/\s+/g, '').slice(0, 12);
+        var t = els[i].tagName === 'INPUT'
+          ? ((els[i].closest('label') || els[i].parentNode || {}).textContent || '')
+          : (els[i].textContent || '');
+        s += t.replace(/\s+/g, '').slice(0, 12);
       }
       var h = 5381;
       for (var j = 0; j < s.length; j++) { h = ((h * 33) ^ s.charCodeAt(j)) >>> 0; }
@@ -652,7 +693,8 @@ if (!window.storage) {
 
   /* 前の世代のチェックを掃除する */
   try {
-    localStorage.removeItem('checks');   /* 世代管理を入れる前に保存された分 */
+    localStorage.removeItem('checks');                  /* 世代管理を入れる前の分 */
+    localStorage.removeItem('hata-oyado-checklist');    /* 同上（持ち物リスト側） */
     for (var n = localStorage.length - 1; n >= 0; n--) {
       var kk = localStorage.key(n);
       if (kk && kk.indexOf(__ASAGO_NS) === 0 && kk.slice(-__ASAGO_SIG.length - 2) !== ('::' + __ASAGO_SIG)) {
@@ -688,7 +730,6 @@ if (!window.storage) {
     }
   };
 }
-
 (function(){
   var items = Array.prototype.slice.call(
     document.querySelectorAll('ul.check li, ol.timeline li')
@@ -1016,7 +1057,7 @@ if (!window.storage) {
 </script>
 <!-- ASAGO_STAMP -->
 <div style="text-align:center;font-size:12px;opacity:.55;padding:14px 10px 22px;font-family:inherit">
-  さいごの こうしん：8月8日 12:14
+  さいごの こうしん：8月8日 12:22
 </div>
 <!-- /ASAGO_STAMP -->
 </body>
