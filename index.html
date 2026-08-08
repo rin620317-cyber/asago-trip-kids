@@ -642,6 +642,47 @@
     }
   } catch (e) {}
 
+  /* (1b) ページ上部に、ほかの2ページへのショートカットを置く。
+          父の収支ページはまだ作りかけなので、その旨が見た目で分かるようにしている。 */
+  try {
+    var header = document.querySelector('header');
+    if (header && !document.getElementById('asago-top-links')) {
+      var st = document.createElement('style');
+      st.textContent =
+        '#asago-top-links{display:grid;gap:12px;grid-template-columns:1fr;margin:0 0 clamp(22px,2.6vw,40px)}'
+        + '@media(min-width:640px){#asago-top-links{grid-template-columns:1fr 1fr}}'
+        + '#asago-top-links>*{display:flex;align-items:center;gap:.7em;background:var(--card);'
+        + 'border-radius:24px;padding:.8em 1.1em;text-decoration:none;color:var(--ink);'
+        + 'box-shadow:0 8px 22px rgba(74,50,102,.10);font-weight:700;'
+        + 'font-family:"Zen Maru Gothic",sans-serif;border:2px solid transparent}'
+        + '#asago-top-links a{border-color:var(--mint)}'
+        + '#asago-top-links a:hover{transform:translateY(-2px)}'
+        + '#asago-top-links .em{font-size:1.5em;line-height:1;flex:0 0 auto}'
+        + '#asago-top-links .tx{display:flex;flex-direction:column;line-height:1.35;min-width:0}'
+        + '#asago-top-links .tx small{font-weight:500;font-size:.72em;color:var(--ink-soft)}'
+        + '#asago-top-links .wip{border-color:var(--rule);border-style:dashed;opacity:.75}'
+        + '#asago-top-links .badge{margin-left:auto;flex:0 0 auto;font-size:.66em;font-weight:700;'
+        + 'padding:.3em .85em;border-radius:99px;background:#D8F5EC;color:#2E8D6F;white-space:nowrap}'
+        + '#asago-top-links .wip .badge{background:var(--paper-2);color:var(--ink-soft)}';
+      document.head.appendChild(st);
+
+      var box = document.createElement('div');
+      box.id = 'asago-top-links';
+      box.innerHTML =
+          '<a href="checklist.html">'
+        +   '<span class="em">🎒</span>'
+        +   '<span class="tx">もちものリスト<small>おにいちゃんが作りました</small></span>'
+        +   '<span class="badge">みる</span>'
+        + '</a>'
+        + '<a class="wip" href="https://rin620317-cyber.github.io/asago-trip-2026/" target="_blank" rel="noopener">'
+        +   '<span class="em">💰</span>'
+        +   '<span class="tx">おかねと だんどり<small>おとうさん・まだ作りかけ</small></span>'
+        +   '<span class="badge">つくりかけ</span>'
+        + '</a>';
+      header.insertAdjacentElement('afterend', box);
+    }
+  } catch (e) {}
+
   /* (2) 2日目：チェックアウトを美術館より前に出す。
          先に精算まで済ませておけば、美術館で時間を気にしなくてよくなるため。
          すでにチェックアウトが先ならなにもしない（娘さんが直したら自動で無効になる）。 */
@@ -1057,7 +1098,7 @@ if (!window.storage) {
 </script>
 <!-- ASAGO_STAMP -->
 <div style="text-align:center;font-size:12px;opacity:.55;padding:14px 10px 22px;font-family:inherit">
-  さいごの こうしん：8月8日 12:22
+  さいごの こうしん：8月8日 12:33
 </div>
 <!-- /ASAGO_STAMP -->
 </body>
