@@ -667,6 +667,26 @@ if (!window.storage) {
     }
   };
 }
+
+/* ASAGO_HIDE_PACKING — 持ち物リストは長男のページの担当なので、このページからは出さない。
+   娘さんのHTMLは書き換えず、読み込み時にカードごと取り除いている。
+   （このページ側のコードより先に走らせているので、チェックの通し番号もずれない）
+   元に戻したいときは update.ps1 のこのブロックを消すだけ。
+   カードの見出し名が変わると一致しなくなり、その時は「隠れず表示される」側に倒れる。 */
+(function(){
+  try {
+    var HIDE = ['買い出し', 'あそび道具', '身のまわり'];
+    var cards = document.querySelectorAll('.board .card');
+    for (var i = 0; i < cards.length; i++) {
+      var h = cards[i].querySelector('h2');
+      if (!h) continue;
+      var t = (h.textContent || '').replace(/\s+/g, '');
+      for (var j = 0; j < HIDE.length; j++) {
+        if (t.indexOf(HIDE[j]) === 0) { cards[i].remove(); break; }
+      }
+    }
+  } catch (e) {}
+})();
 (function(){
   var items = Array.prototype.slice.call(
     document.querySelectorAll('ul.check li, ol.timeline li')
@@ -994,7 +1014,7 @@ if (!window.storage) {
 </script>
 <!-- ASAGO_STAMP -->
 <div style="text-align:center;font-size:12px;opacity:.55;padding:14px 10px 22px;font-family:inherit">
-  さいごの こうしん：8月8日 11:59
+  さいごの こうしん：8月8日 12:05
 </div>
 <!-- /ASAGO_STAMP -->
 </body>
