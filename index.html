@@ -631,6 +631,7 @@ if (!window.storage) {
 
   /* 前の世代のチェックを掃除する */
   try {
+    localStorage.removeItem('checks');   /* 世代管理を入れる前に保存された分 */
     for (var n = localStorage.length - 1; n >= 0; n--) {
       var kk = localStorage.key(n);
       if (kk && kk.indexOf(__ASAGO_NS) === 0 && kk.slice(-__ASAGO_SIG.length - 2) !== ('::' + __ASAGO_SIG)) {
@@ -993,7 +994,7 @@ if (!window.storage) {
 </script>
 <!-- ASAGO_STAMP -->
 <div style="text-align:center;font-size:12px;opacity:.55;padding:14px 10px 22px;font-family:inherit">
-  さいごの こうしん：8月8日 11:53
+  さいごの こうしん：8月8日 11:59
 </div>
 <!-- /ASAGO_STAMP -->
 </body>
