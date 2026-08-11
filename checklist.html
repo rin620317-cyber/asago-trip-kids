@@ -114,17 +114,12 @@
   input:checked ~ .txt{color:var(--usu);text-decoration:line-through;text-decoration-color:var(--line);opacity:.75}
   input:focus-visible + .box{outline:2px solid var(--koke);outline-offset:2px}
 
-  /* ---- provided (no checkbox) ---- */
-  .provided{
-    background:#eee9da;border:1px dashed var(--line);
-    padding:15px 17px;margin-top:12px;
+  .note{font-size:13px;color:var(--usu);margin:0 0 6px;line-height:1.7}
+  .grp{
+    font-family:"Shippori Mincho B1",serif;font-size:13px;color:var(--koke);
+    letter-spacing:.12em;padding:14px 4px 5px;border-bottom:none;
   }
-  .provided .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-  .provided .tag{
-    font-size:12.5px;color:var(--koke);background:var(--paper);
-    border:1px solid #cfd6c4;padding:3px 9px;border-radius:2px;
-  }
-  .provided p{margin:0;font-size:13.5px;color:#5c5a52}
+  li.grp + li{border-top:1px dotted var(--line)}
 
   /* ---- footer ---- */
   .foot{margin:38px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--usu)}
@@ -166,62 +161,49 @@
   </div>
 
   <section>
-    <div class="sec-head"><h2>いちばんに積むもの</h2><span class="tally"></span></div>
+    <div class="sec-head"><h2>各自で持ってくるもの</h2><span class="tally"></span></div>
+    <p class="note">一人ひとりが自分の分を用意。9 人ぶん、声をかけておく。</p>
     <ul>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">大きめのクーラーボックス</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">保冷剤（多め）<em>凍らせたペットボトルを入れると飲み物も兼ねられる</em></span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">BBQ の食材<em>生肉は前日から凍らせ気味に</em></span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">飲み物</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">焼肉のたれ</span></label></li>
-    </ul>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>泊まりの基本</h2><span class="tally"></span></div>
-    <ul>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">タオル・バスタオル（人数分）</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">歯ブラシ・歯みがき粉</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">シャンプー・リンス・ボディソープ<em>固形石けんは宿にあり</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">歯ブラシ・歯みがき粉<em>備品一覧に歯ブラシの記載がない</em></span></label></li>
       <li><label><input type="checkbox"><span class="box"></span><span class="txt">パジャマ・部屋着</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">着替え<em>汗と水遊びで濡れる前提。1 セット多めに</em></span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">常備薬・絆創膏</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">着替え・下着<em>汗と水あそびで濡れる前提。1 セット多めに</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">水着・濡れてもいい服</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">マリンシューズかサンダル<em>川底の石ですべる・切るのを防ぐ</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">川あがりに使う大きめのタオル</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">よふど温泉で使うタオル<em>宿のバスタオルとは別に</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">帽子</span></label></li>
       <li><label><input type="checkbox"><span class="box"></span><span class="txt">健康保険証</span></label></li>
       <li><label><input type="checkbox"><span class="box"></span><span class="txt">スマホの充電器</span></label></li>
-    </ul>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>真夏と、外あそび</h2><span class="tally"></span></div>
-    <ul>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">虫よけスプレー・かゆみ止め</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">蚊取り線香</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">日焼け止め・帽子・サングラス</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">濡れてもいいサンダル・スニーカー</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">レジャーシート</span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">水筒<em>ヒメハナ公園で使う</em></span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">軍手<em>野菜の収穫体験用</em></span></label></li>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">虫かご・虫あみ<em>川あそびと公園で</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">保冷剤か凍らせたペットボトル<em>各自で持ち寄って 1 つのクーラーボックスへ</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">飲み物</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">軍手<em>野菜の収穫体験用。子どもの分も</em></span></label></li>
       <li><label><input type="checkbox"><span class="box"></span><span class="txt">懐中電灯<em>囲炉裏と焚き火の夜まわりに</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">虫よけスプレー<em>川辺は蚊のほかブヨ・アブも出る</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">濡れたものを入れるビニール袋<em>大小いくつか</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">かゆみ止め</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">日焼け止め</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">常備薬・絆創膏</span></label></li>
     </ul>
   </section>
 
   <section>
-    <div class="sec-head"><h2>あると盛り上がる</h2><span class="tally"></span></div>
+    <div class="sec-head"><h2>伊丹から持っていくもの</h2><span class="tally"></span></div>
+    <p class="note">数が少ないので積み忘れに注意。</p>
     <ul>
-      <li><label><input type="checkbox"><span class="box"></span><span class="txt">トランプ</span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">BBQ の食材<em>生肉は前日から凍らせ気味に</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">虫かご・虫あみ</span></label></li>
     </ul>
   </section>
 
-  <div class="provided">
-    <p><strong>持って行かなくていいもの</strong>（宿に無料で揃っています）</p>
-    <div class="tags">
-      <span class="tag">BBQ コンロ・炭</span><span class="tag">トング</span><span class="tag">燻製スモーカー</span>
-      <span class="tag">調理器具・皿</span><span class="tag">IH・電子レンジ</span><span class="tag">ケトル</span>
-      <span class="tag">冷蔵庫</span><span class="tag">タープ</span><span class="tag">ランタン</span>
-      <span class="tag">テーブル・椅子</span><span class="tag">洗濯機・乾燥機</span><span class="tag">ドライヤー</span>
-      <span class="tag">固形石けん</span><span class="tag">自転車</span>
-    </div>
-  </div>
+  <section>
+    <div class="sec-head"><h2>西宮から持っていくもの</h2><span class="tally"></span></div>
+    <p class="note">食材まわりと小物。</p>
+    <ul>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">大きめのクーラーボックス<em>やまよしで買うわさビーフの分も空けておく</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">お米 5 合分<em>炊飯器・土鍋・精米機は宿にある</em></span></label></li>
+      <li><label><input type="checkbox"><span class="box"></span><span class="txt">焼肉のたれ<em>基本の調味料は宿にあるが、好みのたれは持参が確実</em></span></label></li>
+    </ul>
+  </section>
 
   <div class="foot">
     <dl>
@@ -353,7 +335,7 @@ if (!window.storage) {
 </script>
 <!-- ASAGO_STAMP -->
 <div style="text-align:center;font-size:12px;opacity:.55;padding:14px 10px 22px;font-family:inherit">
-  さいごの こうしん：8月11日 10:01
+  さいごの こうしん：8月11日 10:05
 </div>
 <!-- /ASAGO_STAMP -->
 </body>
